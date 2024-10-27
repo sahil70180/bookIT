@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Room from "../models/room";
+import Room from "@/backend/models/room";
 
 export const allRooms = async (req: NextRequest) => {
   const data = await Room.find();
