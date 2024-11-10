@@ -1,18 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import Room from "@/backend/models/room";
+import ErrorHandler from "../utils/ErrorHandler";
 
 // get all rooms ==> /api/rooms
 export const allRooms = async (req: NextRequest) => {
-  const data = await Room.find();
+  try {
+    const data = await Room.find();
 
-  return NextResponse.json({
-    success: "true",
-    message: "All Rooms fetched Successfully",
-    data,
-  });
+    throw new ErrorHandler("No Found", 404);
+
+    return NextResponse.json({
+      success: "true",
+      message: "All Rooms fetched Successfully",
+      data,
+    });
+  } catch (error: any) {
+    // console.log(error);
+    return NextResponse.json(
+      {
+        success: "true",
+        message: error?.message,
+      },
+      {
+        status: error?.statusCode,
+      }
+    );
+  }
 };
 
-// create new room ==> /api/room
+// create new room ==> /api/admin/room
 export const newRoom = async (req: NextRequest) => {
   const body = await req.json();
   const room = await Room.create(body);
@@ -53,7 +69,7 @@ export const getRoomDetails = async (
   );
 };
 
-// update room details ==> /api/rooms/[id]
+// update room details ==> /api/admin/rooms/[id]
 export const updateRoomDetails = async (
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -87,7 +103,7 @@ export const updateRoomDetails = async (
   );
 };
 
-// delete room based on id
+// delete room based on id ==> /api/admin/rooms/[id]
 
 export const deleteRoom = async (
   req: NextRequest,
@@ -109,7 +125,7 @@ export const deleteRoom = async (
   }
 
   // found then update room
-  await Room.findByIdAndDelete(id); // new : true means it will return the room with update details
+  await Room.findByIdAndDelete(id);
 
   return NextResponse.json(
     {
