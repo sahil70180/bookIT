@@ -5,6 +5,10 @@ type controllerFunction = (
   params: any
 ) => Promise<NextResponse>;
 
+interface IValidationError {
+  message: string;
+}
+
 export const catchAsyncErrors =
   (controllerFunction: controllerFunction) =>
   async (req: NextRequest, params: any) => {
@@ -17,6 +21,15 @@ export const catchAsyncErrors =
       //   1) like to update error message for invalid mongoose ID
       if (error?.name === "CastError") {
         error.message = `Resource not found. Invalid ${error?.path}`;
+        error.statusCode = 400;
+      }
+
+      // validation errors
+      if (error.name === "ValidationError") {
+        error.message = Object.values<IValidationError>(error.errors)?.map(
+          (error) => error.message
+        );
+
         error.statusCode = 400;
       }
 
