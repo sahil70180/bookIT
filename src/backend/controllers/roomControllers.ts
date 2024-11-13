@@ -1,16 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import Room from "@/backend/models/room";
+import Room, { IRoom } from "@/backend/models/room";
 import ErrorHandler from "@/backend/utils/ErrorHandler";
 import { catchAsyncErrors } from "@/backend/middlewares/catchAsyncErrors";
+import ApiFilters from "../utils/apiFilters";
 
 // get all rooms ==> /api/rooms
 export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
-  const data = await Room.find();
+  // const data = await Room.find();
+
+  // getting all the query Parameters from the url in Next js
+  const { searchParams } = new URL(req.url);
+
+  const queryStr: any = {};
+
+  searchParams.forEach((value, key) => {
+    queryStr[key] = value;
+  });
+
+  console.log(queryStr);
+
+  // creating the instance of class
+  const apiFilters = new ApiFilters(Room, queryStr).search(); // in query pass ROmm modal and queryStr pass the params
+
+  const rooms: IRoom = await apiFilters.query;
+  // console.log("Search Params : ", searchParams);
 
   return NextResponse.json({
     success: "true",
-    message: "All Rooms fetched Successfully",
-    data,
+    message: `Rooms fetched Successfully`,
+    rooms,
   });
 });
 
@@ -88,7 +106,7 @@ export const deleteRoom = catchAsyncErrors(
       throw new ErrorHandler("No Room Found with this id", 404);
     }
 
-    // found then update room
+    // found then Delete room
     await Room.findByIdAndDelete(id);
 
     return NextResponse.json(
