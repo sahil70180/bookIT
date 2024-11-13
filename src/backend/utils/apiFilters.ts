@@ -25,6 +25,18 @@ class ApiFilters {
     this.query = this.query.find({ ...location });
     return this;
   }
+
+  // filter the data based on other fields
+  filters(): ApiFilters {
+    const queryCopy = { ...this.QueryStr };
+
+    const removedFields = ["location"]; // because we already handle location in search
+    removedFields.forEach((el) => delete queryCopy[el]);
+
+    this.query = this.query.find(queryCopy);
+
+    return this;
+  }
 }
 
 export default ApiFilters;

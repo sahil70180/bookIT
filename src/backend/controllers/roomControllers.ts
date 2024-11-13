@@ -6,8 +6,6 @@ import ApiFilters from "../utils/apiFilters";
 
 // get all rooms ==> /api/rooms
 export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
-  // const data = await Room.find();
-
   // getting all the query Parameters from the url in Next js
   const { searchParams } = new URL(req.url);
 
@@ -17,13 +15,10 @@ export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
     queryStr[key] = value;
   });
 
-  console.log(queryStr);
-
   // creating the instance of class
-  const apiFilters = new ApiFilters(Room, queryStr).search(); // in query pass ROmm modal and queryStr pass the params
+  const apiFilters = new ApiFilters(Room, queryStr).search().filters(); // in query pass ROmm modal and queryStr pass the params
 
   const rooms: IRoom = await apiFilters.query;
-  // console.log("Search Params : ", searchParams);
 
   return NextResponse.json({
     success: "true",
