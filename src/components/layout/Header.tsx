@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = () => {
+export default function Header() {
   return (
     <nav className="navbar sticky-top py-2">
       <div className="container">
@@ -59,6 +59,4 @@ const Header = () => {
       </div>
     </nav>
   );
-};
-
-export default Header;
+}
