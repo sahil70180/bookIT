@@ -9,20 +9,32 @@ export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
   // getting all the query Parameters from the url in Next js
   const { searchParams } = new URL(req.url);
 
+  const resPerPage: number = 4;
+
   const queryStr: any = {};
 
   searchParams.forEach((value, key) => {
     queryStr[key] = value;
   });
 
+  const roomCount: number = await Room.countDocuments();
+
   // creating the instance of class
   const apiFilters = new ApiFilters(Room, queryStr).search().filters(); // in query pass ROmm modal and queryStr pass the params
 
-  const rooms: IRoom = await apiFilters.query;
+  let rooms: IRoom[] = await apiFilters.query;
+  const filteredRoomCount = rooms.length;
+
+  // pagination
+  apiFilters.pagination(resPerPage);
+  rooms = await apiFilters.query.clone();
 
   return NextResponse.json({
-    success: "true",
     message: `Rooms fetched Successfully`,
+    success: "true",
+    roomCount,
+    filteredRoomCount,
+    resPerPage,
     rooms,
   });
 });

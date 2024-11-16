@@ -30,10 +30,23 @@ class ApiFilters {
   filters(): ApiFilters {
     const queryCopy = { ...this.QueryStr };
 
-    const removedFields = ["location"]; // because we already handle location in search
+    const removedFields = ["location", "page"]; // because we already handle location in search
     removedFields.forEach((el) => delete queryCopy[el]);
 
     this.query = this.query.find(queryCopy);
+
+    return this;
+  }
+
+  // pagination
+  pagination(resPerPage: number): ApiFilters {
+    const currentPae = Number(this.QueryStr?.page) || 1;
+
+    // calculate the skip based on current page and res per page
+    const skip = resPerPage * (currentPae - 1);
+
+    // pass this to mongoose
+    this.query = this.query.limit(resPerPage).skip(skip);
 
     return this;
   }
