@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   return (
     <div className="container">
-      <Home rooms={data} />
+      <Home data={data} />
     </div>
   );
 }

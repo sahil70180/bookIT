@@ -1,7 +1,19 @@
 import React from "react";
 import RoomItem from "./room/RoomItem";
+import { IRoom } from "@/backend/models/room";
+interface Props {
+  data: {
+    message: string;
+    success: boolean;
+    roomCount: number;
+    filteredRoomCount: number;
+    resPerPage: number;
+    rooms: IRoom[];
+  };
+}
+export default function Home({ data }: Props) {
+  const { rooms } = data;
 
-export default function Home({ rooms }) {
   return (
     <div>
       <section id="rooms" className="container mt-5">
@@ -10,9 +22,13 @@ export default function Home({ rooms }) {
           <i className="fa fa-arrow-left"></i> Back to Search
         </a>
         <div className="row mt-4">
-          <RoomItem />
-          <RoomItem />
-          <RoomItem />
+          {rooms?.length === 0 ? (
+            <div className="alert alert-danger mt-5 w-100">
+              <p>No Rooms Found</p>
+            </div>
+          ) : (
+            rooms?.map((room, index) => <RoomItem key={index} room={room} />)
+          )}
         </div>
       </section>
     </div>

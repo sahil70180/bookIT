@@ -1,9 +1,14 @@
 "use client";
 import StarRatings from "react-star-ratings";
-export default function Rating() {
+
+interface RatingProps {
+  rating: number;
+}
+
+export default function Rating({ rating }: RatingProps) {
   return (
     <StarRatings
-      rating={5}
+      rating={rating}
       starRatedColor="#e61e4d"
       numberOfStars={6}
       starDimension="18px"
