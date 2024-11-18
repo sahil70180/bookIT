@@ -1,7 +1,7 @@
 import React from "react";
 import RoomItem from "./room/RoomItem";
 
-export default function Home() {
+export default function Home({ rooms }) {
   return (
     <div>
       <section id="rooms" className="container mt-5">

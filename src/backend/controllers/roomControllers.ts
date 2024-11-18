@@ -29,6 +29,8 @@ export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
   apiFilters.pagination(resPerPage);
   rooms = await apiFilters.query.clone();
 
+  throw new ErrorHandler("API Error found", 404);
+
   return NextResponse.json({
     message: `Rooms fetched Successfully`,
     success: "true",
