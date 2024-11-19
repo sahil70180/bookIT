@@ -8,7 +8,14 @@ const nextConfig: NextConfig = {
     DB_PROD_URI: "",
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "http", // or 'https' if using secure URLs
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/udemy-courses/image/upload/**",
+      },
+    ],
   },
 };
 
