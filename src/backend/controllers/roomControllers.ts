@@ -9,7 +9,7 @@ export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
   // getting all the query Parameters from the url in Next js
   const { searchParams } = new URL(req.url);
 
-  const resPerPage: number = 10;
+  const resPerPage: number = 4;
 
   const queryStr: any = {};
 

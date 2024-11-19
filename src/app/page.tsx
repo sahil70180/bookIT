@@ -7,13 +7,20 @@ export const metadata: Metadata = {
   title: "HomePage - BookIT",
 };
 
-const getAllRooms = async () => {
-  const res = await fetch(`${process.env.API_URL}/api/rooms`);
+const getAllRooms = async (searchParams: string) => {
+  const params = await searchParams;
+  const urlParams = new URLSearchParams(params);
+  const queryStr = urlParams.toString();
+  const res = await fetch(`${process.env.API_URL}/api/rooms?${queryStr}`);
   return res.json();
 };
 
-export default async function HomePage() {
-  const data = await getAllRooms();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: string;
+}) {
+  const data = await getAllRooms(searchParams);
 
   if (data?.errorMessage) {
     return <Error error={data} />;
