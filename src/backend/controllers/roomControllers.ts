@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import Room, { IRoom } from "@/backend/models/room";
 import ErrorHandler from "@/backend/utils/ErrorHandler";
 import { catchAsyncErrors } from "@/backend/middlewares/catchAsyncErrors";
-import ApiFilters from "../utils/apiFilters";
+import ApiFilters from "@/backend/utils/apiFilters";
 
 // get all rooms ==> /api/rooms
 export const allRooms = catchAsyncErrors(async (req: NextRequest) => {
   // getting all the query Parameters from the url in Next js
   const { searchParams } = new URL(req.url);
 
-  const resPerPage: number = 4;
+  const resPerPage: number = 10;
 
   const queryStr: any = {};
 
@@ -63,6 +63,8 @@ export const getRoomDetails = catchAsyncErrors(
     if (!room) {
       throw new ErrorHandler("No Room Found with this id", 404);
     }
+
+    // throw new ErrorHandler("Details Error", 404);
 
     return NextResponse.json(
       {

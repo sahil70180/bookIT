@@ -1,6 +1,11 @@
 import Home from "@/components/Home";
 import Image from "next/image";
 import Error from "./error";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "HomePage - BookIT",
+};
 
 const getAllRooms = async () => {
   const res = await fetch(`${process.env.API_URL}/api/rooms`);

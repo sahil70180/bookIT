@@ -51,7 +51,6 @@ export default function RoomItem({ room }: Props) {
             <Link
               className="btn view-btn mt-3 w-100"
               href={`/rooms/${room?._id}`}
-              onClick={() => handleClick()}
             >
               View Details
             </Link>
