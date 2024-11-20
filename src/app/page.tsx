@@ -1,5 +1,4 @@
 import Home from "@/components/Home";
-import Image from "next/image";
 import Error from "./error";
 import { Metadata } from "next";
 
@@ -11,6 +10,7 @@ const getAllRooms = async (searchParams: string) => {
   const params = await searchParams;
   const urlParams = new URLSearchParams(params);
   const queryStr = urlParams.toString();
+
   const res = await fetch(`${process.env.API_URL}/api/rooms?${queryStr}`);
   return res.json();
 };
@@ -21,6 +21,8 @@ export default async function HomePage({
   searchParams: string;
 }) {
   const data = await getAllRooms(searchParams);
+
+  // console.log("Search Params : ", searchParams);
 
   if (data?.errorMessage) {
     return <Error error={data} />;
