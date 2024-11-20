@@ -14,6 +14,7 @@ export interface IUser extends Document {
   resetPasswordExpire: Date;
 }
 
+
 const userSchema: Schema<IUser> = new mongoose.Schema({
   name: {
     type: String,
