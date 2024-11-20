@@ -1,4 +1,7 @@
+import dynamic from "next/dynamic";
 import React from "react";
+
+const Rating = dynamic(() => import("../ui-elements/Rating"), { ssr: false });
 
 const ListReviews = () => {
   return (
@@ -18,11 +21,7 @@ const ListReviews = () => {
           </div>
           <div className="col-9 col-lg-11">
             <div className="star-ratings">
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star"></i>
-              <i className="fa fa-star-half"></i>
+              <Rating rating={3} />
             </div>
             <p className="review_user mt-1">by John Doe</p>
             <p className="review_comment">

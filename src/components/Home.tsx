@@ -21,7 +21,7 @@ export default function Home({ data }: Props) {
       <section id="rooms" className="container mt-5">
         <h2 className="mb-3 ml-2 stays-heading">All Rooms</h2>
         <a href="/search" className="ml-2 back-to-search">
-          <i className="fa fa-arrow-left"></i> Back to Search
+          <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to Search
         </a>
         <div className="row mt-4">
           {rooms?.length === 0 ? (
@@ -35,7 +35,10 @@ export default function Home({ data }: Props) {
       </section>
 
       {/* pagination  */}
-      <CustomPagination resPerPage={resPerPage} filteredRoomCount={filteredRoomCount}/>
+      <CustomPagination
+        resPerPage={resPerPage}
+        filteredRoomCount={filteredRoomCount}
+      />
     </div>
   );
 }
