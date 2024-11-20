@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/udemy-courses/image/upload/**",
       },
+      {
+        protocol: "http", // or 'https' if using secure URLs
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "dquzactsh/image/upload/v1732086848/BookIT/Products/**",
+      },
     ],
   },
 };

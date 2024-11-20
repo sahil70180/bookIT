@@ -40,7 +40,7 @@ export default function Search() {
               type="text"
               className="form-control"
               id="location_field"
-              placeholder="new york"
+              placeholder="New York"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />
