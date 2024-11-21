@@ -4,6 +4,8 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
 export default function GlobalProvider({
   children,
@@ -18,7 +20,9 @@ export default function GlobalProvider({
         // toastStyle={{ backgroundColor: "green" }}
         newestOnTop={true}
       />
-      <SessionProvider>{children}</SessionProvider>
+      <Provider store={store}>
+        <SessionProvider>{children}</SessionProvider>
+      </Provider>
     </>
   );
 }
