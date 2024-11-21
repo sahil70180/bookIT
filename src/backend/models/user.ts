@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import bcrypt from "bcryptjs";
 
 export interface IUser extends Document {
   name: string;
@@ -13,7 +14,6 @@ export interface IUser extends Document {
   resetPasswordToken: string;
   resetPasswordExpire: Date;
 }
-
 
 const userSchema: Schema<IUser> = new mongoose.Schema({
   name: {
@@ -45,6 +45,17 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  // if modify then set password
+  this.password = await bcrypt.hash(this.password, 10);
+
+  next();
 });
 
 export default mongoose.models.User ||

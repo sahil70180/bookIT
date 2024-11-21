@@ -1,0 +1,8 @@
+.Toastify__toast--error {
+  font-size: 0.9rem;
+  color: "#ff0000";
+}
+.Toastify__toast--success {
+  font-size: 0.9rem;
+  color: "green";
+}

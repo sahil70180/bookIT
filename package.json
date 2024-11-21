@@ -10,9 +10,11 @@
     "seeder": "tsc src/backend/seeder/seeder.ts --outdir .temp && node .temp/seeder/seeder.js && rmdir .temp /s /q"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "mongoose": "^8.7.2",
     "next": "15.0.1",
+    "next-auth": "^4.24.10",
     "next-connect": "^1.0.0",
     "react": "^18",
     "react-bootstrap": "^2.10.5",
