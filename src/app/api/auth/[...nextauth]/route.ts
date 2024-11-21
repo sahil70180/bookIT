@@ -4,6 +4,7 @@ import ErrorHandler from "@/backend/utils/ErrorHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 
 type Credentials = {
@@ -13,6 +14,9 @@ type Credentials = {
 
 async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
+    pages: {
+      signIn: "/login",
+    },
     session: {
       strategy: "jwt",
     },
@@ -42,37 +46,56 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
           return user;
         },
       }),
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      }),
     ],
     callbacks: {
-      jwt: async ({ token, user }) => {
-        console.log("===============");
-        console.log("Token in jwt : ", token);
-        console.log("user in jwt : ", user);
-        console.log("================");
-        // user && (token.user = token); // merge user with token
-        if (user) {
-          token.user = {
-            //@ts-ignore
-            id: user._id.toString(),
-            name: user.name,
-            email: user.email,
-            //@ts-ignore
-            role: user.role,
-            //@ts-ignore
-            createdAt: user.createdAt,
-            //@ts-ignore
-            avatar: user?.avatar,
-          };
+      async signIn({ user, account, profile, email, credentials }) {
+        try {
+          if (account?.provider !== "credentials") {
+            await dbConnect();
+            const findUser = await User.findOne({
+              email: user?.email,
+            });
+            if (findUser) {
+              //@ts-ignore
+              // user?.id = findUser?._id?.toString();
+              return true;
+            }
+            const newUser = await User.create({
+              name: user?.name,
+              email: user?.email,
+              avatar: user?.image,
+              authType: account?.type,
+              provider: account?.provider,
+            });
+            return true;
+          }
+          return true;
+        } catch (error) {
+          console.log("Error in Sign In", error);
+          return false;
         }
+      },
+      jwt: async ({ token, user, account }) => {
+        // console.log("===============");
+        // console.log("Token in jwt : ", token);
+        // console.log("user in jwt : ", user);
+        // console.log("================");
 
+        user && (token.user = user); // merge user with token
         //TODO -- also update the session when user is updated
 
         return token;
       },
       session: async ({ session, user, token }) => {
-        console.log("session : ", session);
-        console.log("Token in session : ", token);
-        session.user = token.user as IUser;
+        // console.log("session : ", session);
+        // console.log("Token in session : ", token);
+        // console.log("user in session : ", user);
+
+        session.user = token.user as IUser
 
         return session;
       },

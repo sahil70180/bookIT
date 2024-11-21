@@ -11,6 +11,8 @@ export interface IUser extends Document {
   };
   role: string;
   createdAt: Date;
+  authType: string;
+  provider: string;
   resetPasswordToken: string;
   resetPasswordExpire: Date;
 }
@@ -27,8 +29,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is Required"],
-    minlength: [6, "Password must be longer than 6 characters"],
+    // required: [true, "Password is Required"],
+    // minlength: [6, "Password must be longer than 6 characters"],
     select: false,
   },
   avatar: {
@@ -43,6 +45,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  authType: String,
+  provider: String,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
