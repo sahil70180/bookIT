@@ -52,18 +52,22 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
       }),
     ],
     callbacks: {
+      //for sign in
       async signIn({ user, account, profile, email, credentials }) {
         try {
           if (account?.provider !== "credentials") {
+            // if user is using open Auth
             await dbConnect();
+
+            // find the user in DB
             const findUser = await User.findOne({
               email: user?.email,
             });
             if (findUser) {
-              //@ts-ignore
-              // user?.id = findUser?._id?.toString();
               return true;
             }
+
+            // else create a user in DB
             const newUser = await User.create({
               name: user?.name,
               email: user?.email,
@@ -95,7 +99,7 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
         // console.log("Token in session : ", token);
         // console.log("user in session : ", user);
 
-        session.user = token.user as IUser
+        session.user = token.user as IUser;
 
         return session;
       },

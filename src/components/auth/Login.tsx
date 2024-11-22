@@ -57,12 +57,12 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = async () => {
-    return toast.success("Handle Google Sign In");
+    return toast.info("Handle Google Sign In");
     // const result = await signIn("google", { callbackUrl: "/", redirect: true });
     // console.log("result : ", result);
   };
   const handleGitHubSignIn = () => {
-    return toast.success("Handle Github Sign In");
+    return toast.info("Handle Github Sign In");
   };
 
   return (
